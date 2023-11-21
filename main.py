@@ -1,18 +1,20 @@
 import os
-from player import Player
+from nbaplayer import NBAPlayer
+from nba_api.stats.static import players
 
 
 def main():
-    print(priority(player=Player("201566.json"), season="2016-17",
-          attributes=["PTS", "AST", "REB"]))
+    print(info(NBAPlayer("2200.json"))["TEAM_NAME"])
 
 
 def priority(player, season, attributes, criteria="per_game"):
     # If only one attribute is given turn it to a list
     if not isinstance(attributes, list):
         attributes = [attributes]
-    comparison_results = []
+    most_similar_season = []
     for other_player in all_players():
+        if other_player.player_id == player.player_id:
+            continue
         for other_season in other_player.seasons():
             # skip_season is true when the other player's attribute is unavailable or more than 50% different than the player's attribute
             skip_season = False
@@ -40,13 +42,16 @@ def priority(player, season, attributes, criteria="per_game"):
             except TypeError:
                 continue
             if not skip_season:
-                comparison_results.append(
-                    (round(distance(other_attrs, player_attrs), 3), f"{other_player.player_name} - {other_season}"))
-    # Return the 10 closest seasons
-    return sorted(comparison_results, key=lambda x: x[0])[1:11]
+                # Euclidean distance of the two players' seasons in regards to the percentage difference of each attribute
+                similarity = distance(other_attrs, player_attrs)
+                if len(most_similar_season) == 0 or similarity < most_similar_season[0]:
+                    most_similar_season = [similarity, [
+                        other_player.player_name, other_season]]
+    # Return the closest season
+    return most_similar_season[1]
 
 
-def get_stat(player: Player, attr: str, season: str, criteria: str):
+def get_stat(player: NBAPlayer, attr: str, season: str, criteria: str):
     match criteria:
         case "totals":
             return totals(player=player, attribute=attr)[season]
@@ -64,11 +69,27 @@ def distance(a: list, b: list):
 
 def all_players():
     # All players in NBA history as a list of Player objects
-    l = []
+    players = []
     for file in os.listdir("cache/"):
         if ".json" in file:
-            l.append(Player(file))
-    return l
+            players.append(NBAPlayer(file))
+    return players
+
+
+def active_players():
+    # List of all players currently playing in the NBA
+    player_list = []
+    for active_player in players.get_active_players():
+        player_list.append(NBAPlayer(f"{active_player['id']}.json"))
+    return player_list
+
+
+def inactive_players():
+    # List of all players currently playing in the NBA
+    player_list = []
+    for inactive_player in players.get_inactive_players():
+        player_list.append(NBAPlayer(f"{inactive_player['id']}.json"))
+    return player_list
 
 
 def all_seasons():
@@ -81,7 +102,7 @@ def all_seasons():
     return seasons
 
 
-def info(player: Player):
+def info(player: NBAPlayer):
     # "PERSON_ID", "FIRST_NAME", "LAST_NAME", "DISPLAY_FIRST_LAST", "DISPLAY_LAST_COMMA_FIRST", "DISPLAY_FI_LAST", "PLAYER_SLUG",
     # "BIRTHDATE", "SCHOOL", "COUNTRY", "LAST_AFFILIATION", "HEIGHT", "WEIGHT", "SEASON_EXP", "JERSEY", "POSITION", "ROSTERSTATUS",
     # "TEAM_ID", "TEAM_NAME", "TEAM_ABBREVIATION", "TEAM_CODE", "TEAM_CITY", "PLAYERCODE", "FROM_YEAR", "TO_YEAR", "DLEAGUE_FLAG",
@@ -89,7 +110,7 @@ def info(player: Player):
     return player.get_info()
 
 
-def totals(player: Player, attribute: str):
+def totals(player: NBAPlayer, attribute: str):
     total_stats = player.get_stat_totals()
     attribute_all_seasons = {}
     for season in total_stats.keys():
@@ -97,7 +118,7 @@ def totals(player: Player, attribute: str):
     return attribute_all_seasons
 
 
-def per_game(player: Player, attribute: str):
+def per_game(player: NBAPlayer, attribute: str):
     per_game_stats = player.get_stats_per_game()
     attribute_all_seasons = {}
     for season in per_game_stats.keys():
@@ -105,7 +126,7 @@ def per_game(player: Player, attribute: str):
     return attribute_all_seasons
 
 
-def per_36(player: Player, attribute: str):
+def per_36(player: NBAPlayer, attribute: str):
     per_36_stats = player.get_stats_per_36()
     attribute_all_seasons = {}
     for season in per_36_stats.keys():

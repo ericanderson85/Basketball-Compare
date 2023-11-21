@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title class="center">{{ player.player_name }}</title>
+{% endblock %}
+
+{% block body %}
+<a id="random" href="/player?id={{ random_player }}">Random Player</a>
+<div class="player">
+    <h1 class="center">{{ player.player_name }}</h1>
+    <h2 class="center">{{ position | default("--", true) }} / {{ height[0] | default("--", true) }}'{{ height[1] |
+        default("--", true) }}" / {{ country | default("--", true) }}</h2>
+    <br>
+    <div>
+        <img class="center" src="../static/images/{{ player.player_id }}.png" alt="Picture of {{ player.player_name }}"
+            onerror="this.style.display='none'">
+    </div>
+    <br>
+    <br>
+    <br>
+    <div id="stats">
+        <table>
+            <tr>
+                <th>SEASON</th>
+                <th>TEAM</th>
+                <th>AGE</th>
+                <th>GP</th>
+                <th>MP</th>
+                <th>PTS</th>
+                <th>AST</th>
+                <th>RBS</th>
+                <th>BLK</th>
+                <th>STL</th>
+                <th>TOV</th>
+                <th>FGA</th>
+                <th>FGM</th>
+                <th>FG%</th>
+                <th>3PA</th>
+                <th>3PM</th>
+                <th>3P%</th>
+                <th>FTA</th>
+                <th>FTM</th>
+                <th>FT%</th>
+            </tr>
+            {% for season in seasons %}
+            <tr>
+                <td>{{ season | default("--", true) }}</td>
+                <td>{{ stats[season]["TEAM_ABBREVIATION"] | default("--", true) }}</td>
+                <td>{{ stats[season]["PLAYER_AGE"] | default("--", true) }}</td>
+                <td>{{ stats[season]["GP"] | default("--", true) }}</td>
+                <td>{{ stats[season]["MIN"] | default("--", true) }}</td>
+                <td>{{ stats[season]["PTS"] | default("--", true) }}</td>
+                <td>{{ stats[season]["AST"] | default("--", true) }}</td>
+                <td>{{ stats[season]["REB"] | default("--", true) }}</td>
+                <td>{{ stats[season]["BLK"] | default("--", true) }}</td>
+                <td>{{ stats[season]["STL"] | default("--", true) }}</td>
+                <td>{{ stats[season]["TOV"] | default("--", true) }}</td>
+                <td>{{ stats[season]["FGA"] | default("--", true) }}</td>
+                <td>{{ stats[season]["FGM"] | default("--", true) }}</td>
+                <td>{{ stats[season]["FG_PCT"] | default("--", true) }}%</td>
+                <td>{{ stats[season]["FG3A"] | default("--", true) }}</td>
+                <td>{{ stats[season]["FG3M"] | default("--", true) }}</td>
+                <td>{{ stats[season]["FG3_PCT"] | default("--", true) }}%</td>
+                <td>{{ stats[season]["FTA"] | default("--", true) }}</td>
+                <td>{{ stats[season]["FTM"] | default("--", true) }}</td>
+                <td>{{ stats[season]["FT_PCT"] | default("--", true) }}%</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endblock %}
