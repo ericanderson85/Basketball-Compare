@@ -1,10 +1,12 @@
 from flask import Flask, render_template
 from player_page import player
+from search_page import search
 from random import choice
 import os
 
 app = Flask(__name__)
 app.register_blueprint(player, url_prefix="/")
+app.register_blueprint(search, url_prefix="/")
 
 
 @app.route("/")

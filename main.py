@@ -4,7 +4,8 @@ from nba_api.stats.static import players
 
 
 def main():
-    print(info(NBAPlayer("2200.json"))["TEAM_NAME"])
+    player = NBAPlayer("101110.json")
+    print(player.seasons())
 
 
 def priority(player, season, attributes, criteria="per_game"):

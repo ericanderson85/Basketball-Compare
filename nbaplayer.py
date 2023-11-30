@@ -1,4 +1,5 @@
 import json
+from ordered_set import OrderedSet
 
 
 class NBAPlayer:
@@ -43,9 +44,9 @@ class NBAPlayer:
 
     def seasons(self):
         # List of all the seasons a player played
-        l = []
+        l = OrderedSet()
         for season in self.data[0]["resultSets"][0]["rowSet"]:
-            l.append(season[1])
+            l.add(season[1])
         return l
 
     def get_stats_per_game(self):

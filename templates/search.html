@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Player Search</title>
+{% endblock %}
+
+{% block body %}
+<a href="/player?id={{ random_player }}">Random Player</a>
+<br>
+
+{% for result in search_results %}
+
+<div style="margin-left: auto; margin-right: auto; text-align: center;">
+    <a href="/player?id={{ result['ID'] }}">{{ result["Name"] }}</a>
+    <br>
+    <img style="height:100px;" src="../static/images/{{ result['ID'] }}.png"
+        onerror="this.onerror=null; this.src='../static/images/{{ result['ID'] }}.jpg'; this.onerror=function(){this.style.display='none';}"
+        alt="Picture of {{ result['Name'] }}">
+</div>
+<br>
+{% endfor %}
+
+
+
+{% endblock %}
