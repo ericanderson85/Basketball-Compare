@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;1,900&display=swap');
+
 html {
     background-color: #0F0F0F;
 }
 
 * {
-    font-family: sans-serif;
+    font-family: 'Rubik', sans-serif;
     margin: 0;
     color: #F1F1F1;
 }
@@ -15,44 +17,72 @@ html {
 }
 
 .top-element.center {
+    font-family: 'Rubik', sans-serif;
+    font-size: 50px;
     left: 50%;
+    text-align: center;
     position: absolute;
     transform: translateX(-50%);
 }
 
 .top-element.left {
     position: absolute;
+    font-family: 'Rubik', sans-serif;
+    font-size: 25px;
 }
 
 .top-element.right {
     position: absolute;
+    font-family: 'Rubik', sans-serif;
     right: 0%;
 }
 
-#info {
-    border: 1px solid white;
+.info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#headshot {
-    height: 200px;
+
+.info {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
 }
 
+.info-img {
+    height: 250px;
+    margin-right: 20px;
+}
 
-h2 {
+.info-boxes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    max-height: 250px;
+}
+
+.info-text {
     width: fit-content;
+    text-align: center;
     margin-top: 2px;
     margin-bottom: 2px;
     padding: 5px;
     border: 5px solid #272727;
     background-color: #272727;
     border-radius: 10px;
+    font-size: 34px;
+    margin: 5px;
 }
 
 
 
 table {
     display: table;
-    width: 80%;
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
@@ -61,6 +91,7 @@ table {
 
 th,
 td {
+    font-size: 18px;
     padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 8px;

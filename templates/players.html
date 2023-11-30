@@ -7,7 +7,7 @@
 {% block body %}
 
 <div id="top-container">
-    <a class="top-element left" href="/player?id={{ random_player }}">Random Player</a>
+    <a class="top-element left" href="/player?id={{ random_player }}">RANDOM PLAYER</a>
     <h1 class="top-element center">{{ player.player_name }}</h1>
     <form class="top-element right" autocomplete="off" action="/search?search=">
         <div class="autocomplete">
@@ -21,14 +21,28 @@
 
 
 
+<div class="info-container">
+    <div class="info">
 
-<div id="info">
-    {% for information in info %}
-    <p>{{ information | default("--" , true) }}</p>
-    {% endfor %}
-    <img id="headshot" src="../static/images/{{ player.player_id }}.png"
-        onerror="this.onerror=null; this.src='../static/images/{{ player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
-        alt="Picture of {{ player.player_name }}">
+
+        <img class="info-img" src="../static/images/{{ player.player_id }}.png"
+            onerror="this.onerror=null; this.src='../static/images/{{ player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
+            alt="Picture of {{ player.player_name }}">
+
+
+        <div class="info-boxes">
+
+
+            {% for information in info %}
+            <pre class="info-text"> {{ information | default("--" , true) }} </pre>
+            {% endfor %}
+
+
+        </div>
+
+
+
+    </div>
 </div>
 
 <div style="overflow-x:auto;">

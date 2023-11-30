@@ -17,34 +17,34 @@ def player_profile():
 
     info.append(information["POSITION"])
 
-    info.append(information["COUNTRY"])
-
-    info.append(information["SCHOOL"])
+    try:
+        info.append(f"{information["HEIGHT"].split(
+            "-")[0]}'{information["HEIGHT"].split("-")[1]}\"")
+    except:
+        pass
 
     info.append(f"{information["WEIGHT"]} lbs")
 
+    info.append(information["COUNTRY"])
+
     info.append(f"#{information["JERSEY"]}")
+
+    if information["BIRTHDATE"] is not None:
+        info.append(f"{information["BIRTHDATE"].split("T")[0].split("-")[1]}/{information["BIRTHDATE"].split(
+            "T")[0].split("-")[2]}/{information["BIRTHDATE"].split("T")[0].split("-")[0]}")
 
     if information["DRAFT_YEAR"] == "Undrafted" or information["DRAFT_YEAR"] == "None":
         info.append("Undrafted")
     elif information["DRAFT_ROUND"] is None or information["DRAFT_NUMBER"] is None:
         info.append(f"{information["DRAFT_YEAR"]} NBA Draft")
     else:
-        info.append(f"{information["DRAFT_YEAR"]} NBA Draft - Round {
+        info.append(f"{information["DRAFT_YEAR"]} NBA Draft \n Round {
                     information["DRAFT_ROUND"]} Pick {information["DRAFT_NUMBER"]}")
+
+    info.append(information["SCHOOL"])
 
     if information["GREATEST_75_FLAG"] == "Y":
         info.append("75th Anniversary Team")
-
-    if information["BIRTHDATE"] is not None:
-        info.append(f"{information["BIRTHDATE"].split("T")[0].split("-")[1]}/{information["BIRTHDATE"].split(
-            "T")[0].split("-")[2]}/{information["BIRTHDATE"].split("T")[0].split("-")[0]}")
-
-    try:
-        info.append(f"{information["HEIGHT"].split(
-            "-")[0]}'{information["HEIGHT"].split("-")[1]}\"")
-    except:
-        pass
 
     info = [x for x in info if x != "#" and x != " lbs"]
 
