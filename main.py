@@ -1,11 +1,12 @@
 import os
 from nbaplayer import NBAPlayer
 from nba_api.stats.static import players
+import numpy as np
 
 
 def main():
-    player = NBAPlayer("101110.json")
-    print(player.seasons())
+    player = NBAPlayer("201939.json")
+    print(priority(player, "2015-16", ["PTS", "FG3A", "FG3_PCT"]))
 
 
 def priority(player, season, attributes, criteria="per_game"):

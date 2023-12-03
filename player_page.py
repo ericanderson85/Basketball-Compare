@@ -43,9 +43,6 @@ def player_profile():
 
     info.append(information["SCHOOL"])
 
-    if information["GREATEST_75_FLAG"] == "Y":
-        info.append("75th Anniversary Team")
-
     info = [x for x in info if x != "#" and x != " lbs"]
 
     random_player = choice(os.listdir("cache/")).split(".")[0]

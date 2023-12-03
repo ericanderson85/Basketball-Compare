@@ -1,14 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Rubik:ital,wght@0,400;0,500;1,900&display=swap');
 
 html {
-    background-color: #0F0F0F;
+    background-color: #121212;
 }
 
 * {
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
-    color: #F1F1F1;
+    color: #FFFFFF;
 }
+
+.button {
+    background-color: #b30000;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.1s;
+}
+
+.compare {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 #top-container {
     position: relative;
@@ -17,7 +38,6 @@ html {
 }
 
 .top-element.center {
-    font-family: 'Rubik', sans-serif;
     font-size: 50px;
     left: 50%;
     text-align: center;
@@ -27,15 +47,57 @@ html {
 
 .top-element.left {
     position: absolute;
-    font-family: 'Rubik', sans-serif;
-    font-size: 25px;
 }
+
+.top-element.left:hover {
+    background-color: #9a0c0c;
+}
+
 
 .top-element.right {
     position: absolute;
-    font-family: 'Rubik', sans-serif;
+    min-width: 10px;
     right: 0%;
+    height: 20px;
 }
+
+.wrapper {
+    position: relative;
+    display: flex;
+    min-width: 100px;
+    width: 300px;
+    height: 30px;
+}
+
+#text-box {
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    padding: 2px 23px 2px 30px;
+    outline: 0;
+    background-color: white;
+    color: black;
+}
+
+#search-icon {
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    width: 20px;
+}
+
+#search-button {
+    position: absolute;
+    opacity: 0;
+    width: 30px;
+    height: 36px;
+}
+
+#search-path {
+    fill: black;
+}
+
 
 .info-container {
     display: flex;
@@ -59,8 +121,6 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: auto;
-    margin-bottom: auto;
     flex-wrap: wrap;
     overflow-x: auto;
     max-height: 250px;
@@ -72,8 +132,8 @@ html {
     margin-top: 2px;
     margin-bottom: 2px;
     padding: 5px;
-    border: 5px solid #272727;
-    background-color: #272727;
+    border: 5px solid #373737;
+    background-color: #373737;
     border-radius: 10px;
     font-size: 34px;
     margin: 5px;
@@ -82,6 +142,7 @@ html {
 
 
 table {
+    font-family: 'Rubik', sans-serif;
     display: table;
     border-collapse: collapse;
     margin-left: auto;
@@ -96,11 +157,12 @@ td {
     padding-bottom: 3px;
     padding-left: 8px;
     padding-right: 8px;
-    border-left: 1px solid #272727;
+    border-left: 1px solid #373737;
 }
 
 th {
-    color: #e15252;
+    color: #c22b2b;
+    font-weight: 500;
 }
 
 td:first-child,
@@ -109,14 +171,18 @@ th:first-child {
 }
 
 td:first-child {
-    color: #c60606;
-    font-weight: 800;
+    color: #b30000;
+    font-weight: 500;
 }
 
 tr {
-    border-bottom: 1px solid #272727;
+    border-bottom: 1px solid #373737;
 }
 
 tr:last-child {
     border-bottom: none;
+}
+
+.stat:hover {
+    background-color: #b30000;
 }
