@@ -142,7 +142,7 @@ tr:last-child {
 
 #comparison {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .comparison-column {

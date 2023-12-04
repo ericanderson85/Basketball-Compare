@@ -72,6 +72,20 @@ def radar(stats, other_stats, categories):
         "TOV": 5.7, "FGA": 39.5, "FGM": 20, "FG_PCT": 100,
         "FG3A": 13.2, "FG3M": 5.5, "FG3_PCT": 100
     }
+    label_mapping = {
+        "PTS": "PTS",
+        "AST": "AST",
+        "REB": "REB",
+        "BLK": "BLK",
+        "STL": "STL",
+        "TOV": "TOV",
+        "FGA": "FGA",
+        "FGM": "FGM",
+        "FG_PCT": "FG%",
+        "FG3A": "3PA",
+        "FG3M": "3PM",
+        "FG3_PCT": "3P%"
+    }
 
     # Normalize the data
     normalized = [stats[i] / normalization_factors[categories[i]]
@@ -115,6 +129,7 @@ def radar(stats, other_stats, categories):
         label.set_zorder(3)  # Place the labels on top of other elements
 
     # Draw one axe per variable and add labels
+    categories = [label_mapping.get(label, label) for label in categories]
     plt.xticks(angles[:-1], categories)
 
     # Plot data and fill area for the first dataset
@@ -160,4 +175,5 @@ def player_comparison():
     random_player = choice(os.listdir("cache/")).split(".")[0]
     radar_chart = radar(stats=stats, other_stats=other_stats,
                         categories=selected_headers)
+
     return render_template("comparison.html", player=player, season=season, selected_headers=selected_headers, other_player=other_player, stats=stats, other_stats=other_stats, other_season=other_season, attr=selected_headers, random_player=random_player, radar_chart=radar_chart)
