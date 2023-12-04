@@ -17,7 +17,7 @@ app.register_blueprint(comparison, url_prefix="/")
 def home():
     random_player = choice(
         os.listdir("static/images/")).split(".")[0]
-    return render_template("index.html", random_player=random_player)
+    return render_template("index.html", random_player=random_player, player=None)
 
 
 if __name__ == "__main__":

@@ -22,4 +22,4 @@ def search_for_player():
         if len(search_results) > 20:
             search_results = search_results[:20]
 
-    return render_template("search.html", search_results=search_results, random_player=random_player)
+    return render_template("search.html", search_results=search_results, random_player=random_player, player=None)

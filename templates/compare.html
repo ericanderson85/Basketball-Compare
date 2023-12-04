@@ -8,7 +8,7 @@
     function headerClicked(header) {
         if (selectedHeaders.indexOf(header) === -1) {
             selectedHeaders.push(header);
-            document.getElementById(header).style.backgroundColor = 'yellow';  // Optional: visual feedback
+            document.getElementById(header).style.backgroundColor = '#373737';  // Optional: visual feedback
         } else {
             selectedHeaders.splice(selectedHeaders.indexOf(header), 1);
             document.getElementById(header).style.backgroundColor = '';  // Optional: visual feedback
@@ -16,21 +16,37 @@
     }
 
     function submitHeaders() {
-        document.getElementById("selected_headers").value = JSON.stringify(selectedHeaders);
-        document.getElementById("header_form").submit();
+        if (selectedHeaders.length >= 3) {
+            document.getElementById("selected_headers").value = JSON.stringify(selectedHeaders);
+            document.getElementById("header_form").submit();
+        } else {
+            alert("Please select at least three headers.");
+        }
     }
 </script>
 {% endblock %}
 
 {% block body %}
+{% if season is string %}
+<h1 class="center">{{ season | default("--", true) }}</h1>
+{% endif %}
+<img class="center" src="../static/images/{{ player.player_id }}.png"
+    onerror="this.onerror=null; this.src='../static/images/{{ player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
+    alt="Picture of {{ player.player_name }}">
+<br>
+{% if season is not string %}
+<h1 class="center">Choose a season to compare</h1>
+{% else %}
+<h1 class="center">Select stats to include in comparison</h1>
+{% endif %}
 <div style="overflow-x:auto;">
     <table>
-        {% if season is iterable and season is not string %}
+        {% if season is not string %}
         <tr>
             <th>SEASON</th>
             <th>PTS</th>
-            <th>RBS</th>
             <th>AST</th>
+            <th>REB</th>
             <th>BLK</th>
             <th>STL</th>
             <th>TOV</th>
@@ -64,11 +80,10 @@
         </tr>
         {% endfor %}
         {% else %}
-        <h1>{{ season | default("--", true) }}</h1>
         <tr>
             <th class="stat" id="PTS" onclick="headerClicked('PTS')">PTS</th>
-            <th class="stat" id="RBS" onclick="headerClicked('RBS')">RBS</th>
             <th class="stat" id="AST" onclick="headerClicked('AST')">AST</th>
+            <th class="stat" id="REB" onclick="headerClicked('REB')">REB</th>
             <th class="stat" id="BLK" onclick="headerClicked('BLK')">BLK</th>
             <th class="stat" id="STL" onclick="headerClicked('STL')">STL</th>
             <th class="stat" id="TOV" onclick="headerClicked('TOV')">TOV</th>
@@ -94,13 +109,14 @@
             <td>{{ stats[season]["FG3M"] | default("--", true) }}</td>
             <td>{{ stats[season]["FG3_PCT"] | default("--", true) }}%</td>
         </tr>
-        <form id="header_form" action="/process_headers">
-            <input type="hidden" id="selected_headers" name="selected_headers">
-            <input type="hidden" id="player_id" name="player_id" value="{{ player.player_id }}">
-            <input type="hidden" id="season" name="season" value="{{ season }}">
-            <button type="button" onclick="submitHeaders()">Submit Selected Headers</button>
-        </form>
         {% endif %}
     </table>
+    <br>
+    <form id="header_form" action="/process_headers" style="display: flex; justify-content: center;">
+        <input type="hidden" id="selected_headers" name="selected_headers">
+        <input type="hidden" id="player_id" name="player_id" value="{{ player.player_id }}">
+        <input type="hidden" id="season" name="season" value="{{ season }}">
+        <button class="button" type="button" onclick="submitHeaders()">Compare Player</button>
+    </form>
 </div>
 {% endblock %}

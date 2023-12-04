@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Compare {{ player.player_name }}</title>
+{% endblock %}
+
+{% block body %}
+<div id="comparison">
+    <div class="comparison-column">
+        <img src="../static/images/{{ player.player_id }}.png"
+            onerror="this.onerror=null; this.src='../static/images/{{ player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
+            alt="Picture of {{ player.player_name }}">
+        <h1 style="color: #006F00;" class="center">{{ player.player_name }}</h1>
+        <h1 style="color: #006F00;" class="center">{{ season }}</h1>
+    </div>
+    <div class="comparison-column">
+        <table>
+            {% for i in range(selected_headers|length) %}
+            <tr>
+                <th>{{ selected_headers[i] }}</th>
+                <td>{{ stats[i] | default("--", true) }}</td>
+                <td>{{ other_stats[i] | default("--", true) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <img src="data:image/png;base64,{{ radar_chart }}" />
+    </div>
+    <div class="comparison-column">
+        <img src="../static/images/{{ other_player.player_id }}.png"
+            onerror="this.onerror=null; this.src='../static/images/{{ other_player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
+            alt="Picture of {{ other_player.player_name }}">
+        <h1 style="color: #004480;" class="center">{{ other_player.player_name }}</h1>
+        <h1 style="color: #004480;" class="center">{{ other_season }}</h1>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
