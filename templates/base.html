@@ -49,6 +49,10 @@
             color: black;
         }
 
+        .text-box::placeholder {
+            color: var(--gray);
+        }
+
         .search-icon {
             position: absolute;
             top: 8px;
@@ -94,6 +98,7 @@
         </form>
     </div>
     {% block body %}{% endblock %}
+    <script src="../static/script.js"></script>
 </body>
 
 </html>

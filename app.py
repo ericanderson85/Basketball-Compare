@@ -5,6 +5,7 @@ from compare_page import compare
 from comparison_page import comparison
 from random import choice
 import os
+import csv
 
 app = Flask(__name__)
 app.register_blueprint(player, url_prefix="/")
@@ -15,9 +16,14 @@ app.register_blueprint(comparison, url_prefix="/")
 
 @app.route("/")
 def home():
+    players = []
+    with open('players.csv', "r", newline='', errors="ignore") as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            players.append(row)
     random_player = choice(
         os.listdir("static/images/")).split(".")[0]
-    return render_template("index.html", random_player=random_player, player=None)
+    return render_template("index.html", random_player=random_player, players=players)
 
 
 if __name__ == "__main__":

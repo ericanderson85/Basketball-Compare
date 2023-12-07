@@ -1,8 +1,123 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block head %}
-<title>Home Page</title>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Rubik:ital,wght@0,400;0,500;1,900&display=swap');
 
-{% block body %}
-{% endblock %}
+        :root {
+            --primary-accent: #b30000;
+            --secondary-accent: #a40000;
+            --gray: #373737;
+        }
+
+        * {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            color: white;
+        }
+
+        html,
+        body {
+            background-color: #121212;
+            height: 100%;
+        }
+
+        .text-box {
+            border: 5px ridge var(--gray);
+            border-radius: 10px;
+            outline: 0;
+            background-color: transparent;
+            width: 500px;
+            height: 40px;
+            padding-left: 10px;
+            font-size: 18px;
+            transition: all .5s ease;
+        }
+
+        .text-box::placeholder {
+            transition: all .5s ease;
+        }
+
+        .text-box:focus {
+            border: 5px ridge rgb(239, 232, 232);
+            border-radius: 15px;
+
+        }
+
+        .text-box:focus::placeholder {
+            color: rgb(197, 197, 197);
+        }
+
+
+        .container {
+            border: 1px solid green;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .inner {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .button {
+            padding: 10px 20px 10px;
+            border: 5px inset var(--secondary-accent);
+            color: rgb(239, 232, 232);
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 800;
+            text-align: center;
+            align-self: center;
+            transition: all .5s ease;
+        }
+
+        .button:hover {
+            background-color: #1c1919;
+            color: white;
+            border-color: var(--primary-accent);
+        }
+
+        h1 {
+            text-align: center;
+            -webkit-text-stroke: 1px var(--primary-accent);
+            color: rgb(239, 232, 232);
+            text-shadow:
+                3px 3px 0 var(--secondary-accent),
+                -1px -1px 0 var(--secondary-accent),
+                1px -1px 0 var(--secondary-accent),
+                -1px 1px 0 var(--secondary-accent),
+                1px 1px 0 var(--secondary-accent);
+            margin: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner">
+            <form action="/search?search=">
+                <input list="players" id="text-box" class="text-box" type="text" name="search"
+                    placeholder="SEARCH FOR A PLAYER" autocomplete="off">
+            </form>
+            <h1>or</h1>
+            <a class="button" href="/player?id={{ random_player }}">SURPRISE ME</a>
+        </div>
+    </div>
+
+    <datalist id="players">
+        {% for player in players %}
+        <option value="{{ player['Name'].title() }}"></option>
+        {% endfor %}
+    </datalist>
+
+
+</body>
+
+</html>

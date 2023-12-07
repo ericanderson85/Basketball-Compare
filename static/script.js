@@ -11,11 +11,3 @@ searchButton.addEventListener('mouseover', function () {
 searchButton.addEventListener('mouseout', function () {
     searchPath.style.fill = 'black';
 });
-
-textBox.addEventListener('focus', function () {
-    this.placeholder = '';
-});
-
-textBox.addEventListener('blur', function () {
-    this.placeholder = 'Search for a player';
-});
