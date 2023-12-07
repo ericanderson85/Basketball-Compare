@@ -1,6 +1,5 @@
 import base64
 import io
-import mpld3
 from math import pi
 import matplotlib.pyplot as plt
 from random import choice

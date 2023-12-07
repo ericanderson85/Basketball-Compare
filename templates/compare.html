@@ -8,17 +8,21 @@
     function headerClicked(header) {
         if (selectedHeaders.indexOf(header) === -1) {
             selectedHeaders.push(header);
-            document.getElementById(header).style.backgroundColor = '#373737';  // Optional: visual feedback
+            document.getElementById(header).style.backgroundColor = '#373737';
         } else {
             selectedHeaders.splice(selectedHeaders.indexOf(header), 1);
-            document.getElementById(header).style.backgroundColor = '';  // Optional: visual feedback
+            document.getElementById(header).style.backgroundColor = '';
         }
     }
 
     function submitHeaders() {
         if (selectedHeaders.length >= 3) {
             document.getElementById("selected_headers").value = JSON.stringify(selectedHeaders);
-            document.getElementById("header_form").submit();
+
+            var loadingGif = document.getElementById("loadingGif");
+            loadingGif.style.display = "block";
+
+            document.getElementById("header-form").submit();
         } else {
             alert("Please select at least three stats.");
         }
@@ -110,13 +114,14 @@
             <td>{{ stats[season]["FG3_PCT"] | default("--", true) }}%</td>
         </tr>
     </table>
-    <br>
-    <form id="header_form" action="/process_headers" style="display: flex; justify-content: center;">
+    <form id="header-form" action="/process_headers" style="display: flex; justify-content: center;">
         <input type="hidden" id="selected_headers" name="selected_headers">
         <input type="hidden" id="player_id" name="player_id" value="{{ player.player_id }}">
         <input type="hidden" id="season" name="season" value="{{ season }}">
         <button class="button" type="button" onclick="submitHeaders()">Compare Player</button>
     </form>
+    <img class="center" src="../static/images/loading.gif" id="loadingGif"
+        style="display: none; height: 39px; margin-top:10px">
     {% endif %}
 </div>
 {% endblock %}

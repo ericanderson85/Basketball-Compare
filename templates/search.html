@@ -3,19 +3,19 @@
 {% block head %}
 <title>Player Search</title>
 {% endblock %}
-
 {% block body %}
 
-{% for result in search_results %}
+{% if large %}
+<p>Showing 36 results...</p>
+{% endif %}
 
-<div style="margin-left: auto; margin-right: auto; text-align: center;">
-    <a href="/player?id={{ result['ID'] }}">{{ result["Name"] }}</a>
-    <br>
+{% for result in search_results %}
+<div class="search-container">
     <img style="height:100px;" src="../static/images/{{ result['ID'] }}.png"
         onerror="this.onerror=null; this.src='../static/images/{{ result['ID'] }}.jpg'; this.onerror=function(){this.style.display='none';}"
         alt="Picture of {{ result['Name'] }}">
+    <a style="margin-bottom: 20px;" href="/player?id={{ result['ID'] }}">{{ result["Name"] }}</a>
 </div>
-<br>
 {% endfor %}
 
 

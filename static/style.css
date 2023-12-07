@@ -50,6 +50,7 @@ table {
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 10px;
     text-align: center;
 }
 
@@ -158,6 +159,11 @@ tr:last-child {
     justify-self: center;
 }
 
-.comparison table {
+.search-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 40px;
+    margin-left: 40px;
     margin-bottom: 20px;
 }
