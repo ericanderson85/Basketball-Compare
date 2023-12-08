@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 from nbaplayer import NBAPlayer
-from random import choice
-import os
+from random_player import get_random_player
+import csv
 
 
 player = Blueprint(__name__, "player")
@@ -9,6 +9,11 @@ player = Blueprint(__name__, "player")
 
 @player.route("/player")
 def player_profile():
+    players = []
+    with open('players.csv', "r", newline='', errors="ignore") as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            players.append(row)
     args = request.args
     player = NBAPlayer(f"{args.get("id")}.json")
     information = player.get_info()
@@ -45,8 +50,8 @@ def player_profile():
 
     info = [x for x in info if x != "#" and x != " lbs"]
 
-    random_player = choice(os.listdir("cache/")).split(".")[0]
+    random_player = get_random_player()
     stats = player.get_stats_per_game()
     seasons = player.seasons()
 
-    return render_template("players.html", player=player, stats=stats, seasons=seasons, info=info, random_player=random_player)
+    return render_template("players.html", player=player, stats=stats, seasons=seasons, info=info, random_player=random_player, players=players)

@@ -3,8 +3,7 @@ from player_page import player
 from search_page import search
 from compare_page import compare
 from comparison_page import comparison
-from random import choice
-import os
+from random_player import get_random_player
 import csv
 
 app = Flask(__name__)
@@ -21,8 +20,7 @@ def home():
         csvreader = csv.DictReader(csvfile)
         for row in csvreader:
             players.append(row)
-    random_player = choice(
-        os.listdir("static/images/")).split(".")[0]
+    random_player = get_random_player()
     return render_template("index.html", random_player=random_player, players=players)
 
 

@@ -8,7 +8,7 @@
     function headerClicked(header) {
         if (selectedHeaders.indexOf(header) === -1) {
             selectedHeaders.push(header);
-            document.getElementById(header).style.backgroundColor = '#373737';
+            document.getElementById(header).style.backgroundColor = '#4a110f';
         } else {
             selectedHeaders.splice(selectedHeaders.indexOf(header), 1);
             document.getElementById(header).style.backgroundColor = '';
@@ -118,7 +118,7 @@
         <input type="hidden" id="selected_headers" name="selected_headers">
         <input type="hidden" id="player_id" name="player_id" value="{{ player.player_id }}">
         <input type="hidden" id="season" name="season" value="{{ season }}">
-        <button class="button" type="button" onclick="submitHeaders()">Compare Player</button>
+        <button class="button" type="button" onclick="submitHeaders()">COMPARE PLAYER</button>
     </form>
     <img class="center" src="../static/images/loading.gif" id="loadingGif"
         style="display: none; height: 39px; margin-top:10px">

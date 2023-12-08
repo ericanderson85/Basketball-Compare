@@ -14,16 +14,16 @@
 
     <div class="info-boxes">
         {% for information in info %}
-        <pre class="info-text"> {{ information | default("--" , true) }} </pre>
+        <pre class="info-text">{{ information | default("--" , true) }}</pre>
         {% endfor %}
     </div>
 </div>
 
 <div class="compare">
     {% if seasons|length == 1 %}
-    <a class="button" href="/compare?id={{ player.player_id }}&season={{ seasons[0] }}">Compare</a>
+    <a class="button" href="/compare?id={{ player.player_id }}&season={{ seasons[0] }}">COMPARE</a>
     {% else %}
-    <a class="button" href="/compare?id={{ player.player_id }}&season=all">Compare</a>
+    <a class="button" href="/compare?id={{ player.player_id }}&season=all">COMPARE</a>
     {% endif %}
 </div>
 

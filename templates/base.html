@@ -29,42 +29,37 @@
         .title {
             font-size: 50px;
             justify-self: center;
+            align-self: start;
             text-align: center;
         }
 
-        .search-form {
+        #search-form {
             justify-self: end;
-            min-width: 10px;
-            height: 20px;
         }
 
         .text-box {
-            border: 1px solid black;
-            border-radius: 5px;
-            height: 100%;
-            width: 100%;
-            padding: 2px 23px 2px 30px;
+            border: 5px ridge var(--gray);
+            border-radius: 10px;
             outline: 0;
-            background-color: white;
-            color: black;
+            background-color: transparent;
+            width: 300px;
+            height: 40px;
+            padding-left: 10px;
+            font-size: 18px;
+            transition: all .5s ease;
         }
 
         .text-box::placeholder {
-            color: var(--gray);
+            transition: all .5s ease;
         }
 
-        .search-icon {
-            position: absolute;
-            top: 8px;
-            left: 6px;
-            width: 20px;
+        .text-box:focus {
+            border: 5px ridge rgb(239, 232, 232);
+            border-radius: 15px;
         }
 
-        .search-button {
-            position: absolute;
-            opacity: 0;
-            width: 30px;
-            height: 36px;
+        .text-box:focus::placeholder {
+            color: rgb(197, 197, 197);
         }
     </style>
     {% block head %}{% endblock %}
@@ -72,29 +67,15 @@
 
 <body>
     <div class="header">
-        <a class="button" href="/player?id={{ random_player }}">Random Player</a>
+        <a class="button" href="/player?id={{ random_player }}">RANDOM PLAYER</a>
         {% if player != None %}
         <h1 class="title">{{ player.player_name }}</h1>
         {% else %}
         <h1 class="title"></h1>
         {% endif %}
-        <form class="search-form" autocomplete="off" action="/search?search=">
-            <div class="wrapper">
-                <input id="text-box" class="text-box" type="text" name="search" placeholder="Search for a player">
-                <svg id="search-icon" class="search-icon" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 256 256" xml:space="preserve">
-                    <defs>
-                    </defs>
-                    <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
-                        transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                        <path id="search-path"
-                            d="M 87.803 77.194 L 68.212 57.602 c 9.5 -14.422 7.912 -34.054 -4.766 -46.732 c 0 0 -0.001 0 -0.001 0 c -14.495 -14.493 -38.08 -14.494 -52.574 0 c -14.494 14.495 -14.494 38.079 0 52.575 c 7.248 7.247 16.767 10.87 26.287 10.87 c 7.134 0 14.267 -2.035 20.445 -6.104 l 19.591 19.591 C 78.659 89.267 80.579 90 82.498 90 s 3.84 -0.733 5.305 -2.197 C 90.732 84.873 90.732 80.124 87.803 77.194 z M 21.48 52.837 c -8.645 -8.646 -8.645 -22.713 0 -31.358 c 4.323 -4.322 10 -6.483 15.679 -6.483 c 5.678 0 11.356 2.161 15.678 6.483 c 8.644 8.644 8.645 22.707 0.005 31.352 c -0.002 0.002 -0.004 0.003 -0.005 0.005 c -0.002 0.002 -0.003 0.003 -0.004 0.005 C 44.184 61.481 30.123 61.48 21.48 52.837 z"
-                            style="stroke-dasharray: none; fill: black; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill-rule: nonzero; opacity: 1;"
-                            transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
-                    </g>
-                </svg>
-                <input id="search-button" class="search-button" type="submit">
-            </div>
+        <form id="search-form" action="/search?search=">
+            <input id="text-box" class="text-box" type="text" name="search" placeholder="SEARCH FOR A PLAYER"
+                autocomplete="off">
         </form>
     </div>
     {% block body %}{% endblock %}

@@ -1,8 +1,9 @@
 import base64
 import io
+import csv
 from math import pi
 import matplotlib.pyplot as plt
-from random import choice
+from random_player import get_random_player
 import os
 import json
 from nbaplayer import NBAPlayer
@@ -15,6 +16,7 @@ comparison = Blueprint(__name__, "comparison")
 
 
 def priority(player, season, attributes):
+
     if not isinstance(attributes, list):
         attributes = [attributes]
 
@@ -157,6 +159,11 @@ def radar(stats, other_stats, categories):
 @comparison.route("/comparison")
 def player_comparison():
     player = NBAPlayer(f"{request.args.get('id')}.json")
+    players = []
+    with open('players.csv', "r", newline='', errors="ignore") as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            players.append(row)
     season = request.args.get('season')
     selected_headers = json.loads(request.args.get('s'))
     other_player = priority(
@@ -171,8 +178,8 @@ def player_comparison():
     except:
         return redirect(url_for("home"))
 
-    random_player = choice(os.listdir("cache/")).split(".")[0]
+    random_player = get_random_player()
     radar_chart = radar(stats=stats, other_stats=other_stats,
                         categories=selected_headers)
 
-    return render_template("comparison.html", player=player, season=season, selected_headers=selected_headers, other_player=other_player, stats=stats, other_stats=other_stats, other_season=other_season, attr=selected_headers, random_player=random_player, radar_chart=radar_chart)
+    return render_template("comparison.html", player=player, season=season, selected_headers=selected_headers, other_player=other_player, stats=stats, other_stats=other_stats, other_season=other_season, attr=selected_headers, random_player=random_player, radar_chart=radar_chart, players=players)

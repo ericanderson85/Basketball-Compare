@@ -2,9 +2,9 @@ from flask import render_template, request, Blueprint, redirect, url_for
 from player_page import player
 from search_page import search
 from nbaplayer import NBAPlayer
+import csv
+from random_player import get_random_player
 import json
-from random import choice
-import os
 
 
 compare = Blueprint(__name__, "compare")
@@ -12,6 +12,11 @@ compare = Blueprint(__name__, "compare")
 
 @compare.route("/compare")
 def compare_player():
+    players = []
+    with open('players.csv', "r", newline='', errors="ignore") as csvfile:
+        csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            players.append(row)
     args = request.args
     player_id = args.get("id")
     player = NBAPlayer(f"{player_id}.json")
@@ -20,9 +25,9 @@ def compare_player():
         season = player.seasons()
     else:
         season = args.get("season", None)
-    random_player = choice(os.listdir("cache/")).split(".")[0]
+    random_player = get_random_player()
 
-    return render_template("compare.html", player=player, stats=stats, season=season, random_player=random_player)
+    return render_template("compare.html", player=player, stats=stats, season=season, random_player=random_player, players=players)
 
 
 @compare.route('/process_headers')

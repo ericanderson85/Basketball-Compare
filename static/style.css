@@ -23,23 +23,6 @@ html {
     text-align: center;
 }
 
-
-.button {
-    padding: 10px 20px;
-    background-color: var(--primary-accent);
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.button:hover {
-    background-color: var(--secondary-accent);
-}
-
 img {
     height: 250px;
 }
@@ -135,6 +118,7 @@ tr:last-child {
     margin-top: 8px;
     margin-bottom: 8px;
     margin-left: 5px;
+    margin-right: 5px;
 }
 
 .stat:hover {
@@ -166,4 +150,23 @@ tr:last-child {
     margin-right: 40px;
     margin-left: 40px;
     margin-bottom: 20px;
+}
+
+.button {
+    padding: 10px 20px 10px;
+    background-color: transparent;
+    border: 5px inset var(--secondary-accent);
+    color: rgb(239, 232, 232);
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 800;
+    text-align: center;
+    align-self: center;
+    transition: all .5s ease;
+}
+
+.button:hover {
+    background-color: #1c1919;
+    color: white;
+    border-color: var(--primary-accent);
 }

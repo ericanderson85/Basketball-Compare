@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from random import choice
+from random_player import get_random_player
 import csv
-import os
 
 search = Blueprint(__name__, "search")
 
@@ -10,7 +9,7 @@ search = Blueprint(__name__, "search")
 def search_for_player():
     args = request.args
     search = args.get("search")
-    random_player = choice(os.listdir("cache/")).split(".")[0]
+    random_player = get_random_player()
     search_results = []
     large = False
     with open('players.csv', "r", newline='', errors="ignore") as csvfile:

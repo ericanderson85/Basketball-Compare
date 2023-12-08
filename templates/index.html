@@ -53,7 +53,6 @@
 
 
         .container {
-            border: 1px solid green;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,29 +83,41 @@
             border-color: var(--primary-accent);
         }
 
+        h2,
         h1 {
             text-align: center;
-            -webkit-text-stroke: 1px var(--primary-accent);
+            -webkit-text-stroke: 1px black;
             color: rgb(239, 232, 232);
             text-shadow:
-                3px 3px 0 var(--secondary-accent),
-                -1px -1px 0 var(--secondary-accent),
-                1px -1px 0 var(--secondary-accent),
-                -1px 1px 0 var(--secondary-accent),
-                1px 1px 0 var(--secondary-accent);
+                3px 3px 0 #500001,
+                -1px -1px 0 #500001,
+                1px -1px 0 #500001,
+                -1px 1px 0 #500001,
+                1px 1px 0 #500001;
             margin: 12px;
+            font-size: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            color: white;
+            font-size: 70px;
+            margin: 0%;
         }
     </style>
 </head>
 
 <body>
+    <h1>NBA Compare</h1>
     <div class="container">
         <div class="inner">
             <form action="/search?search=">
                 <input list="players" id="text-box" class="text-box" type="text" name="search"
                     placeholder="SEARCH FOR A PLAYER" autocomplete="off">
             </form>
-            <h1>or</h1>
+            <h2>or</h2>
             <a class="button" href="/player?id={{ random_player }}">SURPRISE ME</a>
         </div>
     </div>
