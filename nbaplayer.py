@@ -86,11 +86,20 @@ class NBAPlayer:
         return stats
 
     def get_stats_simple(self):
+        l = OrderedSet()
+        season_indices = []
+        i = 0
+        for unique_season in self.data[0]["resultSets"][0]["rowSet"]:
+            if unique_season[1] not in l:
+                season_indices.append(i)
+            l.add(unique_season[1])
+            i += 1
         stats = []
-        for season in self.data[0]["resultSets"][0]["rowSet"]:
-            if season[6] <= 0:
+        for index in season_indices:
+            season = self.data[0]["resultSets"][0]["rowSet"][index]
+            games = season[6] if season[6] is not None else 0
+            if games <= 0:
                 continue
-            games = season[6]
             season_stats = [
                 round(season[26] / games,
                       1) if season[26] is not None else None,

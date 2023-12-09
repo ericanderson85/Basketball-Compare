@@ -6,7 +6,6 @@ import io
 from math import pi
 import matplotlib.pyplot as plt
 from random_player import get_random_player
-import json
 from nbaplayer import NBAPlayer
 from flask import render_template, request, Blueprint, redirect, url_for
 import matplotlib
