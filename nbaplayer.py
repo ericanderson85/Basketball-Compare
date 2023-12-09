@@ -52,7 +52,8 @@ class NBAPlayer:
     def get_stats_per_game(self):
         stats = {}
         for season in self.data[0]["resultSets"][0]["rowSet"]:
-            if season[6] <= 0:
+            games = season[6]
+            if games <= 0:
                 continue
             # Some values will be None. These are the stats that weren't always recorded
             stats[season[1]] = {"PLAYER_ID": season[0],
@@ -61,27 +62,60 @@ class NBAPlayer:
                                 "TEAM_ID": season[3],
                                 "TEAM_ABBREVIATION": season[4],
                                 "PLAYER_AGE": int(season[5]),
-                                "GP": season[6],
+                                "GP": games,
                                 "GS": season[7],
-                                "MIN": round(season[8] / season[6], 1) if season[8] is not None else None,
-                                "FGM": round(season[9] / season[6], 1) if season[9] is not None else None,
-                                "FGA": round(season[10] / season[6], 1) if season[10] is not None else None,
+                                "MIN": round(season[8] / games, 1) if season[8] is not None else None,
+                                "FGM": round(season[9] / games, 1) if season[9] is not None else None,
+                                "FGA": round(season[10] / games, 1) if season[10] is not None else None,
                                 "FG_PCT": round(season[11] * 100, 1) if season[11] is not None else None,
-                                "FG3M": round(season[12] / season[6], 1) if season[12] is not None else None,
-                                "FG3A": round(season[13] / season[6], 1) if season[13] is not None else None,
+                                "FG3M": round(season[12] / games, 1) if season[12] is not None else None,
+                                "FG3A": round(season[13] / games, 1) if season[13] is not None else None,
                                 "FG3_PCT": round(season[14] * 100, 1) if season[14] is not None else None,
-                                "FTM": round(season[15] / season[6], 1) if season[15] is not None else None,
-                                "FTA": round(season[16] / season[6], 1) if season[16] is not None else None,
+                                "FTM": round(season[15] / games, 1) if season[15] is not None else None,
+                                "FTA": round(season[16] / games, 1) if season[16] is not None else None,
                                 "FT_PCT": round(season[17] * 100, 1) if season[17] is not None else None,
-                                "OREB": round(season[18] / season[6], 1) if season[18] is not None else None,
-                                "DREB": round(season[19] / season[6], 1) if season[19] is not None else None,
-                                "REB": round(season[20] / season[6], 1) if season[20] is not None else None,
-                                "AST": round(season[21] / season[6], 1) if season[21] is not None else None,
-                                "STL": round(season[22] / season[6], 1) if season[22] is not None else None,
-                                "BLK": round(season[23] / season[6], 1) if season[23] is not None else None,
-                                "TOV": round(season[24] / season[6], 1) if season[24] is not None else None,
-                                "PF": round(season[25] / season[6], 1) if season[25] is not None else None,
-                                "PTS": round(season[26] / season[6], 1) if season[26] is not None else None}
+                                "OREB": round(season[18] / games, 1) if season[18] is not None else None,
+                                "DREB": round(season[19] / games, 1) if season[19] is not None else None,
+                                "REB": round(season[20] / games, 1) if season[20] is not None else None,
+                                "AST": round(season[21] / games, 1) if season[21] is not None else None,
+                                "STL": round(season[22] / games, 1) if season[22] is not None else None,
+                                "BLK": round(season[23] / games, 1) if season[23] is not None else None,
+                                "TOV": round(season[24] / games, 1) if season[24] is not None else None,
+                                "PF": round(season[25] / games, 1) if season[25] is not None else None,
+                                "PTS": round(season[26] / games, 1) if season[26] is not None else None}
+        return stats
+
+    def get_stats_simple(self):
+        stats = []
+        for season in self.data[0]["resultSets"][0]["rowSet"]:
+            if season[6] <= 0:
+                continue
+            games = season[6]
+            season_stats = [
+                round(season[26] / games,
+                      1) if season[26] is not None else None,
+                round(season[21] / games,
+                      1) if season[21] is not None else None,
+                round(season[20] / games,
+                      1) if season[20] is not None else None,
+                round(season[23] / games,
+                      1) if season[23] is not None else None,
+                round(season[22] / games,
+                      1) if season[22] is not None else None,
+                round(season[24] / games,
+                      1) if season[24] is not None else None,
+                round(season[10] / games,
+                      1) if season[10] is not None else None,
+                round(season[9] / games,
+                      1) if season[9] is not None else None,
+                round(season[11] * 100, 1) if season[11] is not None else None,
+                round(season[13] / games,  # 3pt Attempted, 9 13.2
+                      1) if season[13] is not None else None,
+                round(season[12] / games,  # 3pt Made, 10 5.5
+                      1) if season[12] is not None else None,
+                # 3pt percentage, 11
+                round(season[14] * 100, 1) if season[14] is not None else None]
+            stats.append((season[0], season[1], season_stats))
         return stats
 
     def get_stats_per_36(self):

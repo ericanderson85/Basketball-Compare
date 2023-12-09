@@ -1,10 +1,11 @@
 import base64
+from scipy.spatial import KDTree
+import numpy as np
+import json
 import io
-import csv
 from math import pi
 import matplotlib.pyplot as plt
 from random_player import get_random_player
-import os
 import json
 from nbaplayer import NBAPlayer
 from flask import render_template, request, Blueprint, redirect, url_for
@@ -15,56 +16,38 @@ matplotlib.use('Agg')
 comparison = Blueprint(__name__, "comparison")
 
 
-def priority(player, season, attributes):
-
-    if not isinstance(attributes, list):
-        attributes = [attributes]
-
-    player_stats = get_stats_for_player_season(player, season, attributes)
-    if not player_stats or None in player_stats:
-        return "Attributes unavailable for the selected player and season"
-
-    most_similar_season = []
-    for other_player in all_players():
-        if other_player.player_id == player.player_id:
-            continue
-
-        for other_season in other_player.seasons():
-            other_stats = get_stats_for_player_season(
-                other_player, other_season, attributes)
-            if not other_stats or None in other_stats:
-                continue
-
-            similarity = distance(player_stats, other_stats)
-            if not most_similar_season or similarity < most_similar_season[0]:
-                most_similar_season = [similarity, [
-                    other_player, other_season]]
-
-    return most_similar_season[1] if most_similar_season else "No similar seasons found"
+def normalize(data):
+    return [
+        round(100 * data[0] / 50.4, 1) if data[0] is not None else 0.0,
+        round(100 * data[1] / 14.5, 1) if data[1] is not None else 0.0,
+        round(100 * data[2] / 27.2, 1) if data[2] is not None else 0.0,
+        round(100 * data[3] / 5.6, 1) if data[3] is not None else 0.0,
+        round(100 * data[4] / 4.1, 1) if data[4] is not None else 0.0,
+        round(100 * data[5] / 5.7, 1) if data[5] is not None else 0.0,
+        round(100 * data[6] / 39.5, 1) if data[6] is not None else 0.0,
+        round(100 * data[7] / 20, 1) if data[7] is not None else 0.0,
+        data[8] if data[8] is not None else 0.0,
+        round(100 * data[9] / 13.2, 1) if data[10] is not None else 0.0,
+        round(100 * data[10] / 5.3, 1) if data[10] is not None else 0.0,
+        data[11] if data[11] is not None else 0.0]
 
 
-def distance(a: list, b: list):
-    return sum(abs((p - q) / ((p + q) / 2)) for p, q in zip(a, b) if p is not None and q is not None and p + q != 0)
-
-
-def get_stats_for_player_season(player, season, attributes):
-    try:
-        return [get_stat(player, attr, season) for attr in attributes]
-    except TypeError:
-        return None
-
-
-def get_stat(player: NBAPlayer, attr: str, season: str):
-    return per_game(player=player, attribute=attr)[season]
-
-
-def per_game(player: NBAPlayer, attribute: str):
-    per_game_stats = player.get_stats_per_game()
-    return {season: stats[attribute] for season, stats in per_game_stats.items()}
-
-
-def all_players():
-    return [NBAPlayer(file) for file in os.listdir("cache/") if ".json" in file]
+def headers(input_strings):
+    conversion_dict = {
+        "PTS": 0,
+        "AST": 1,
+        "REB": 2,
+        "BLK": 3,
+        "STL": 4,
+        "TOV": 5,
+        "FGA": 6,
+        "FGM": 7,
+        "FG_PCT": 8,
+        "FG3A": 9,
+        "FG3M": 10,
+        "FG3_PCT": 11
+    }
+    return [conversion_dict.get(item, None) for item in input_strings]
 
 
 def radar(stats, other_stats, categories):
@@ -156,30 +139,51 @@ def radar(stats, other_stats, categories):
     return (data)
 
 
+def nearest_player(player, season, selected_headers):
+    with open('index.json', 'r') as file:
+        indices = json.load(file)
+    indices_list = headers(selected_headers)
+    with open('tree_format.json', 'r') as file:
+        unfiltered_data = json.load(file)
+        data = []
+        for i in range(len(unfiltered_data)):
+            if indices[i][0] != player.player_id:
+                filtered_sublist = [unfiltered_data[i][j]
+                                    for j in indices_list]
+                data.append(filtered_sublist)
+            else:
+                data.append([0.0 for _ in range(len(indices_list))])
+    kdtree = KDTree(np.array(data))
+    player_stats = normalize(
+        NBAPlayer(f"{player.player_id}.json").get_stats_simple()[season][2])
+    compare_stats = np.array([player_stats[i] for i in indices_list])
+    index = kdtree.query(compare_stats)[1]
+    return indices[index]
+
+
 @comparison.route("/comparison")
 def player_comparison():
-    player = NBAPlayer(f"{request.args.get('id')}.json")
-    players = []
-    with open('players.csv', "r", newline='', errors="ignore") as csvfile:
-        csvreader = csv.DictReader(csvfile)
-        for row in csvreader:
-            players.append(row)
-    season = request.args.get('season')
     selected_headers = json.loads(request.args.get('s'))
-    other_player = priority(
-        player=player, season=season, attributes=selected_headers)
-    other_season = other_player[1]
-    other_player = other_player[0]
-    stats = [player.get_stats_per_game()[season][key]
-             for key in selected_headers if key in player.get_stats_per_game()[season]]
+    player = NBAPlayer(f"{request.args.get('id')}.json")
+    season = request.args.get('season')
+    season_index = player.seasons().index(season)
+
     try:
-        other_stats = [other_player.get_stats_per_game()[other_season][key]
-                       for key in selected_headers if key in other_player.get_stats_per_game()[other_season]]
+        other_id, other_season = nearest_player(
+            player, season_index, selected_headers)
     except:
         return redirect(url_for("home"))
 
+    other_player = NBAPlayer(f"{other_id}.json")
+
+    stats = [player.get_stats_per_game()[season][key]
+             for key in selected_headers]
+    other_stats = [other_player.get_stats_per_game()[other_season][key]
+                   for key in selected_headers]
+
     random_player = get_random_player()
+
     radar_chart = radar(stats=stats, other_stats=other_stats,
                         categories=selected_headers)
 
-    return render_template("comparison.html", player=player, season=season, selected_headers=selected_headers, other_player=other_player, stats=stats, other_stats=other_stats, other_season=other_season, attr=selected_headers, random_player=random_player, radar_chart=radar_chart, players=players)
+    return render_template("comparison.html", player=player, season=season, selected_headers=selected_headers, other_player=other_player, stats=stats, other_stats=other_stats, other_season=other_season, attr=selected_headers, random_player=random_player, radar_chart=radar_chart)
