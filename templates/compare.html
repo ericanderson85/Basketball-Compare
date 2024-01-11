@@ -31,17 +31,22 @@
 {% endblock %}
 
 {% block body %}
+<h1 class="center">
+    {{ player.player_name }}
+</h1>
 {% if season is string %}
-<h1 class="center">{{ season | default("--", true) }}</h1>
+<h2 class="center">
+    {{ season | default("--", true) }}
+</h2>
 {% endif %}
 <img style="margin-bottom: 15px;" class="center" src="../static/images/{{ player.player_id }}.png"
     onerror="this.onerror=null; this.src='../static/images/{{ player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
     alt="Picture of {{ player.player_name }}">
 
 {% if season is not string %}
-<h1 class="center">Choose a season to compare</h1>
+<h2 class="center" style="margin-top: 20px;">Choose a season to compare</h2>
 {% else %}
-<h1 class="center">Select stats to include in comparison</h1>
+<h2 class="center" style="margin-top: 20px;">Select stats to include in comparison</h2>
 {% endif %}
 <div style="overflow-x:auto;">
     <table>

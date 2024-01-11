@@ -8,9 +8,6 @@
 
 <div class="comparison-container">
     <div class="this-player">
-        <img src="../static/images/{{ player.player_id }}.png"
-            onerror="this.onerror=null; this.src='../static/images/{{ player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
-            alt="Picture of {{ player.player_name }}">
         <a style="color: #006F00;" href="/player?id={{ player.player_id }}">
             <h1 style="color: #006F00;" class="center">{{
                 player.player_name }}</h1>
@@ -38,9 +35,6 @@
         <img src="data:image/png;base64,{{ radar_chart }}" />
     </div>
     <div class="other-player">
-        <img src="../static/images/{{ other_player.player_id }}.png"
-            onerror="this.onerror=null; this.src='../static/images/{{ other_player.player_id }}.jpg'; this.onerror=function(){this.style.display='none';}"
-            alt="Picture of {{ other_player.player_name }}">
         <a style="color: #004480;" href="/player?id={{ other_player.player_id }}">
             <h1 style="color: #004480;" class="center">{{
                 other_player.player_name }}</h1>

@@ -18,7 +18,3 @@ def get_random_player():
     file_name = 'players.csv'
     ids, weights = read_csv()
     return random.choices(ids, weights=weights, k=1)[0]
-
-
-if __name__ == "__main__":
-    print(get_random_player())

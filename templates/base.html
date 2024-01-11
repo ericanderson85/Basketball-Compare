@@ -8,13 +8,13 @@
     <style>
         .header {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr;
             grid-auto-rows: 1fr;
             gap: 0px 0px;
             grid-auto-flow: row;
             grid-template-areas:
-                ". . .";
+                ". .";
             margin-bottom: 20px;
             margin-top: 5px;
             margin-left: 5px;
@@ -26,7 +26,8 @@
             align-self: start;
         }
 
-        .title {
+        .title,
+        .title2 {
             font-size: 50px;
             justify-self: center;
             align-self: start;
@@ -68,16 +69,12 @@
 <body>
     <div class="header">
         <a class="button" href="/player?id={{ random_player }}">RANDOM PLAYER</a>
-        {% if player != None %}
-        <h1 class="title">{{ player.player_name }}</h1>
-        {% else %}
-        <h1 class="title"></h1>
-        {% endif %}
         <form id="search-form" action="/search?search=">
             <input id="text-box" class="text-box" type="text" name="search" placeholder="SEARCH FOR A PLAYER"
                 autocomplete="off">
         </form>
     </div>
+
     {% block body %}{% endblock %}
     <script src="../static/script.js"></script>
 </body>

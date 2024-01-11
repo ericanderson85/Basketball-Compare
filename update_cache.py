@@ -24,7 +24,7 @@ def normalize(data):
 
 
 i = 0
-for player in players.get_active_players()[229:]:
+for player in players.get_active_players():
     id = player['id']
     # Control the frequency of API calls
     time.sleep(0.5)
