@@ -4,7 +4,6 @@ from search_page import search
 from nbaplayer import NBAPlayer
 import csv
 from random_player import get_random_player
-import json
 
 
 compare = Blueprint(__name__, "compare")

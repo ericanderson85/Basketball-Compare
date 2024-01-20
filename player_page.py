@@ -18,7 +18,7 @@ def player_profile():
         for row in csvreader:
             players.append(row)
     args = request.args
-    player = NBAPlayer(f"{args.get("id")}.json")
+    player = NBAPlayer(f"{args.get('id')}.json")
 
     random_player = get_random_player()
     stats = player.get_stats_per_game()

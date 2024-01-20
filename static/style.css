@@ -154,6 +154,12 @@ tr:last-child {
     transform: translate(-50%, -50%);
 }
 
+@media (max-width: 1200px) {
+    .name {
+        top: 15%
+    }
+}
+
 .jcont {
     position: relative;
 }

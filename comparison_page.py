@@ -166,13 +166,8 @@ def player_comparison():
     player = NBAPlayer(f"{request.args.get('id')}.json")
     season = request.args.get('season')
     season_index = player.seasons().index(season)
-
-    try:
-        other_id, other_season = nearest_player(
-            player, season_index, selected_headers)
-    except:
-        return redirect(url_for("home"))
-
+    other_id, other_season = nearest_player(
+        player, season_index, selected_headers)
     other_player = NBAPlayer(f"{other_id}.json")
 
     stats = [player.get_stats_per_game()[season][key]

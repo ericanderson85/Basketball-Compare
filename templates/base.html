@@ -15,10 +15,21 @@
             grid-auto-flow: row;
             grid-template-areas:
                 ". .";
-            margin-bottom: 20px;
             margin-top: 5px;
             margin-left: 5px;
             margin-right: 5px;
+        }
+
+        @media (max-width: 1150px) {
+            .header {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 850px) {
+            .header {
+                margin-bottom: 40px;
+            }
         }
 
         .button {
