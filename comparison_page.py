@@ -78,12 +78,8 @@ def radar(stats, other_stats, categories):
 
     # Number of variables
     N = len(categories)
-
-    # Dataset 1
     values1 = normalized
     values1 += normalized[:1]
-
-    # Dataset 2
     values2 = other_normalized
     values2 += other_normalized[:1]
 
@@ -91,15 +87,13 @@ def radar(stats, other_stats, categories):
     angles = [n / float(N) * 2 * pi for n in range(N)]
     angles += angles[:1]  # Complete the loop
 
-    # Rotate the plot so that the first axis is at the top
-    # Offset by pi/2 (90 degrees) to put the first axis at the top
+    # Offset by 90 degrees to put the first axis at the top
     theta_offset = pi / -2
     angles = [(angle - theta_offset) % (2 * pi) for angle in angles]
 
     # Create a new figure for the spider plot
     fig, ax = plt.subplots(subplot_kw=dict(polar=True))
     ax.yaxis.grid(False)
-
     ax.spines['polar'].set_visible(False)
 
     # Set the angle gridlines and labels
@@ -111,15 +105,13 @@ def radar(stats, other_stats, categories):
         label.set_backgroundcolor('none')
         label.set_zorder(3)  # Place the labels on top of other elements
 
-    # Draw one axe per variable and add labels
+    # Draw one axis per variable and add labels
     categories = [label_mapping.get(label, label) for label in categories]
     plt.xticks(angles[:-1], categories)
 
-    # Plot data and fill area for the first dataset
+    # Plot data and fill area
     ax.plot(angles, values1, label='Dataset 1', color="#006F00")
     ax.fill(angles, values1, '#006F00', alpha=.3)
-
-    # Plot data and fill area for the second dataset
     ax.plot(angles, values2, label='Dataset 2', color="#004480")
     ax.fill(angles, values2, '#004480', alpha=.3)
 
@@ -129,16 +121,15 @@ def radar(stats, other_stats, categories):
     ax.figure.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
 
-    # Save it to a temporary buffer.
     buf = io.BytesIO()
     plt.savefig(buf, format='png', transparent=True, bbox_inches='tight')
     plt.close(fig)
-    # Embed the result in the html output.
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
     return (data)
 
 
 def nearest_player(player, season, selected_headers):
+    # Remove the player being compared from the indices and data
     with open('index.json', 'r') as file:
         indices = json.load(file)
     indices_list = headers(selected_headers)
@@ -152,6 +143,7 @@ def nearest_player(player, season, selected_headers):
                 data.append(filtered_sublist)
             else:
                 data.append([0.0 for _ in range(len(indices_list))])
+    # Build a KDTree with normalized data
     kdtree = KDTree(np.array(data))
     player_stats = normalize(
         NBAPlayer(f"{player.player_id}.json").get_stats_simple()[season][2])

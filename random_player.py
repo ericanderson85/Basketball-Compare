@@ -15,6 +15,5 @@ def read_csv():
 
 
 def get_random_player():
-    file_name = 'players.csv'
     ids, weights = read_csv()
     return random.choices(ids, weights=weights, k=1)[0]

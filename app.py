@@ -15,6 +15,7 @@ app.register_blueprint(comparison, url_prefix="/")
 
 @app.route("/")
 def home():
+    # List of players for autocomplete
     players = []
     with open('players.csv', "r", newline='', errors="ignore") as csvfile:
         csvreader = csv.DictReader(csvfile)
