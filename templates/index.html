@@ -23,6 +23,7 @@
         body {
             background-color: #121212;
             height: 100%;
+            width: 100%;
         }
 
         .text-box {
@@ -30,12 +31,14 @@
             border-radius: 10px;
             outline: 0;
             background-color: transparent;
-            width: 500px;
             height: 40px;
+            width: 500px;
             padding-left: 10px;
             font-size: 18px;
             transition: all .5s ease;
         }
+
+
 
         .text-box::placeholder {
             transition: all .5s ease;
@@ -106,11 +109,31 @@
             font-size: 70px;
             margin: 0%;
         }
+
+        @media (max-width: 800px) {
+            .text-box {
+                width: 300px;
+            }
+
+            h1 {
+                font-size: 50px;
+            }
+        }
+
+        @media (max-width: 470px) {
+            .text-box {
+                width: 200px;
+            }
+
+            h1 {
+                font-size: 35px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <h1>NBA Compare</h1>
+    <h1>Basketball Compare</h1>
     <div class="container">
         <div class="inner">
             <form action="/search?search=">
